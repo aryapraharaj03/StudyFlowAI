@@ -79,7 +79,7 @@ ${text}
 
 export const askQuestion = async (pdfText, question) => {
   const prompt = `
-You are StudyFlow AI, an intelligent study assistant.
+You are Prepzy, an intelligent AI study assistant.
 
 Answer ONLY using the study notes below.
 

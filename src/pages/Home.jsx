@@ -11,62 +11,98 @@ function Home() {
 
       <Navbar />
 
-      <main className="flex flex-col items-center justify-center text-center px-6 py-28">
+      <main className="relative overflow-hidden">
 
-        <span className="bg-violet-100 text-violet-700 px-4 py-2 rounded-full text-sm font-semibold shadow-sm">
-          🚀 AI Exam Companion
-        </span>
+  <div className="absolute top-20 left-20 w-72 h-72 bg-purple-400 opacity-20 blur-3xl rounded-full"></div>
 
-        <h1 className="mt-8 text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight">
-          Prepzy
-        </h1>
+  <div className="absolute bottom-10 right-20 w-96 h-96 bg-blue-400 opacity-20 blur-3xl rounded-full"></div>
 
-        <h2 className="mt-6 text-3xl font-semibold text-gray-700">
-          From Panic to Prepared.
+  <div className="max-w-7xl mx-auto px-6 py-28 text-center">
+
+    <span className="bg-purple-100 text-purple-700 px-5 py-2 rounded-full font-semibold">
+      🚀 AI Powered Last-Minute Study Assistant
+    </span>
+
+    <h1 className="mt-8 text-6xl md:text-8xl font-black text-gray-900 leading-tight">
+
+      Ace Exams.
+
+      <span className="block bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600 bg-clip-text text-transparent">
+        Not Stress.
+      </span>
+
+    </h1>
+
+    <p className="max-w-3xl mx-auto mt-8 text-xl text-gray-600 leading-9">
+
+      Upload your notes once.
+
+      Generate summaries.
+
+      Create quizzes.
+
+      Chat with your PDFs.
+
+      Revise faster than ever with Prepzy.
+
+    </p>
+
+    <div className="mt-12 flex justify-center gap-6 flex-wrap">
+
+      <button
+        onClick={() => navigate("/login")}
+        className="bg-gradient-to-r from-purple-600 to-blue-600
+        text-white px-8 py-4 rounded-xl shadow-xl
+        hover:scale-105 transition"
+      >
+        🚀 Start Prepping
+      </button>
+
+    </div>
+
+    <div className="mt-20 grid md:grid-cols-4 gap-6">
+
+      <div className="bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-3xl font-bold text-purple-600">
+          AI
         </h2>
-
-        <p className="mt-8 max-w-3xl text-lg text-gray-500 leading-8">
-          Upload your notes and let Prepzy build your complete revision kit—
-          smart summaries, quizzes, AI chat, flashcards, cheat sheets, and
-          personalized study plans in minutes.
+        <p className="text-gray-500 mt-2">
+          Smart Learning
         </p>
+      </div>
 
-        <div className="mt-12 flex flex-wrap justify-center gap-5">
+      <div className="bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-3xl font-bold text-purple-600">
+          PDFs
+        </h2>
+        <p className="text-gray-500 mt-2">
+          Interactive Notes
+        </p>
+      </div>
 
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg hover:scale-105 transition"
-          >
-            ✨ Start Prepping
-          </button>
+      <div className="bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-3xl font-bold text-purple-600">
+          Quiz
+        </h2>
+        <p className="text-gray-500 mt-2">
+          Practice Smarter
+        </p>
+      </div>
 
-        </div>
+      <div className="bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-3xl font-bold text-purple-600">
+          Chat
+        </h2>
+        <p className="text-gray-500 mt-2">
+          Ask Anything
+        </p>
+      </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
+    </div>
 
-          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
-            📄
-            <h3 className="font-bold mt-3">Smart Summaries</h3>
-          </div>
+  </div>
 
-          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
-            🤖
-            <h3 className="font-bold mt-3">AI Chat</h3>
-          </div>
-
-          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
-            📝
-            <h3 className="font-bold mt-3">Quiz Generator</h3>
-          </div>
-
-          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
-            ⚡
-            <h3 className="font-bold mt-3">Revision Kit</h3>
-          </div>
-
-        </div>
-
-      </main>
+</main>
 
       <Features />
 

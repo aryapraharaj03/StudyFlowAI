@@ -167,6 +167,51 @@ setShowBack(false);
     }
   };
 
+  const handleRevisionKit = async () => {
+  if (!selectedFile) {
+    toast.error("Please choose a PDF first.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    let text = pdfText;
+
+    if (!text) {
+      text = await extractTextFromPDF(selectedFile);
+      setPdfText(text);
+    }
+
+    const summaryResult = await generateSummary(text);
+    setSummary(summaryResult);
+
+    const quizResult = await generateQuiz(text);
+    setQuiz(quizResult);
+
+    const flashcardsResult = await generateFlashcards(text);
+
+    const cards = flashcardsResult
+      .split("Flashcard")
+      .filter(card => card.trim() !== "")
+      .map(card => ({
+        front: card.match(/Front:(.*)/)?.[1]?.trim(),
+        back: card.match(/Back:(.*)/)?.[1]?.trim(),
+      }));
+
+    setFlashcards(cards);
+    setCurrentCard(0);
+    setShowBack(false);
+
+    toast.success("🎉 Revision Kit Ready!");
+  } catch (error) {
+    console.error(error);
+    toast.error(error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
   const handleAskQuestion = async () => {
   if (!selectedFile) {
     toast.error("Please choose a PDF first.");
@@ -216,7 +261,7 @@ const result = await askQuestion(text, question);
     });
 
     element.href = URL.createObjectURL(file);
-    element.download = "StudyFlow_Summary.txt";
+    element.download = "Prepzy_Summary.txt";
 
     document.body.appendChild(element);
     element.click();
@@ -257,13 +302,13 @@ text-white rounded-3xl p-10 shadow-2xl flex-1">
   </p>
 
   <h1 className="text-3xl md:text-5xl font-extrabold mt-2">
-    📚 StudyFlow AI
+    🚀 Prepzy
   </h1>
 
   <p className="mt-4 text-xl text-purple-100 leading-relaxed max-w-2xl">
-    Upload your study notes and instantly generate
-    AI summaries, quizzes, flashcards, and ask
-    questions about your PDF—all in one place.
+    Turn your study notes into summaries, quizzes,
+flashcards, and instant AI answers in seconds.
+Built for students who study smarter—not longer.
   </p>
 
   <div className="flex flex-wrap gap-3 mt-6">
@@ -312,8 +357,8 @@ text-white rounded-3xl p-10 shadow-2xl flex-1">
     </h2>
 
     <p className="text-gray-500 mt-3 max-w-xl mx-auto">
-      Upload your PDF and let StudyFlow AI instantly generate
-      summaries, quizzes, flashcards, and answer your questions.
+      Upload your notes and let Prepzy instantly create
+summaries, quizzes, flashcards, and answer your questions.
     </p>
 
     <button
@@ -349,66 +394,28 @@ text-white rounded-3xl p-10 shadow-2xl flex-1">
 </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+          <div className="mt-8">
 
-            <button
-              onClick={handleSummary}
-              disabled={loading}
-              className="flex items-center justify-center gap-2
-bg-gradient-to-r from-purple-600 to-indigo-600
-text-white px-7 py-4 rounded-xl shadow-md
-hover:scale-105 transition-all duration-300
-disabled:bg-gray-400"
-            >
-              {loading ? (
-  "Generating..."
-) : (
-  <>
-    <FileText size={20} />
-    <span>Summary</span>
-  </>
-)}
-            </button>
+  <button
+    onClick={handleRevisionKit}
+    disabled={loading}
+    className="w-full bg-gradient-to-r from-purple-600 via-pink-500 to-blue-600
+    text-white py-5 rounded-2xl text-xl font-bold
+    shadow-xl hover:scale-[1.02] transition-all duration-300
+    disabled:bg-gray-400"
+  >
+    {loading ? (
+      "🤖 Building your Revision Kit..."
+    ) : (
+      "✨ Build My Revision Kit"
+    )}
+  </button>
 
-            <button
-              onClick={handleQuiz}
-              disabled={loading}
-              className="flex items-center justify-center gap-2
-bg-gradient-to-r from-green-500 to-emerald-600
-text-white px-7 py-4 rounded-xl shadow-md
-hover:scale-105 transition-all duration-300
-disabled:bg-gray-400"
-            >
-              {loading ? (
-  "Generating..."
-) : (
-  <>
-    <ClipboardList size={20} />
-    <span>Quiz</span>
-  </>
-)}
-            </button>
+  <p className="text-center text-gray-500 mt-4">
+    Generates your AI Summary, Quiz and Flashcards in one click.
+  </p>
 
-            <button
-              onClick={handleFlashcards}
-              disabled={loading}
-              className="flex items-center justify-center gap-2
-bg-gradient-to-r from-orange-500 to-red-500
-text-white px-7 py-4 rounded-xl shadow-md
-hover:scale-105 transition-all duration-300
-disabled:bg-gray-400"
-            >
-              {loading ? (
-  "Generating..."
-) : (
-  <>
-    <Layers size={20} />
-    <span>Flashcards</span>
-  </>
-)}
-            </button>
-
-          </div>
+</div>
 
           {/* Chat with PDF */}
 <div className="mt-8 bg-gray-50 rounded-xl p-6 border">
@@ -458,7 +465,7 @@ disabled:bg-gray-400"
         </h3>
 
         <p className="text-purple-100 text-sm mt-1">
-          Generated from your uploaded PDF
+          Generated by Prepzy AI
         </p>
       </div>
 
