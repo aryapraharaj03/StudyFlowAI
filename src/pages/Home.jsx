@@ -4,49 +4,76 @@ import Features from "../components/Features";
 import Footer from "../components/Footer";
 
 function Home() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
   return (
-  <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-violet-50 via-white to-purple-100">
 
-    <Navbar />
+      <Navbar />
 
-    <main className="flex flex-col items-center justify-center text-center mt-24 py-20 bg-gradient-to-b from-purple-50 to-gray-100 rounded-3xl mx-6">
+      <main className="flex flex-col items-center justify-center text-center px-6 py-28">
 
-      <h1 className="text-6xl md:text-7xl font-extrabold text-gray-900">
-        StudyFlow AI
-      </h1>
+        <span className="bg-violet-100 text-violet-700 px-4 py-2 rounded-full text-sm font-semibold shadow-sm">
+          🚀 AI Exam Companion
+        </span>
 
-      <h2 className="text-3xl text-gray-600 mt-6">
-        Study Smarter. Score Higher.
-      </h2>
+        <h1 className="mt-8 text-6xl md:text-7xl font-extrabold text-gray-900 leading-tight">
+          Prepzy
+        </h1>
 
-      <p className="mt-6 max-w-2xl text-gray-500">
-        AI-powered summaries, quizzes, and chat with your study notes.
-      </p>
+        <h2 className="mt-6 text-3xl font-semibold text-gray-700">
+          From Panic to Prepared.
+        </h2>
 
-      <div className="mt-10 flex gap-4">
+        <p className="mt-8 max-w-3xl text-lg text-gray-500 leading-8">
+          Upload your notes and let Prepzy build your complete revision kit—
+          smart summaries, quizzes, AI chat, flashcards, cheat sheets, and
+          personalized study plans in minutes.
+        </p>
 
-        <button
-  onClick={() => navigate("/signup")}
-  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 hover:scale-105 transition duration-300"
->
-  Get Started
-</button>
+        <div className="mt-12 flex flex-wrap justify-center gap-5">
 
-        <button className="border border-gray-400 px-6 py-3 rounded-lg hover:bg-gray-200 hover:scale-105 transition duration-300">
-          Learn More
-        </button>
+          <button
+            onClick={() => navigate("/login")}
+            className="bg-violet-600 hover:bg-violet-700 text-white px-8 py-4 rounded-2xl font-semibold shadow-lg hover:scale-105 transition"
+          >
+            ✨ Start Prepping
+          </button>
 
-      </div>
+        </div>
 
-    </main>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20">
 
-    <Features />
+          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
+            📄
+            <h3 className="font-bold mt-3">Smart Summaries</h3>
+          </div>
 
-<Footer />
+          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
+            🤖
+            <h3 className="font-bold mt-3">AI Chat</h3>
+          </div>
 
-</div>
-);
+          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
+            📝
+            <h3 className="font-bold mt-3">Quiz Generator</h3>
+          </div>
+
+          <div className="bg-white shadow-lg rounded-2xl p-6 hover:-translate-y-2 transition">
+            ⚡
+            <h3 className="font-bold mt-3">Revision Kit</h3>
+          </div>
+
+        </div>
+
+      </main>
+
+      <Features />
+
+      <Footer />
+
+    </div>
+  );
 }
 
 export default Home;

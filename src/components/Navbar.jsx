@@ -1,44 +1,42 @@
 import { Link } from "react-router-dom";
+
 function Navbar() {
   return (
-    <nav className="flex justify-between items-center px-10 py-6 bg-white shadow-md sticky top-0">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-8 py-5">
 
-      <h2 className="text-2xl font-bold text-purple-600">
-        StudyFlow AI
-      </h2>
+        {/* Logo */}
+        <Link to="/" className="text-3xl font-extrabold text-violet-600 tracking-tight">
+          Prepzy
+        </Link>
 
-      <div className="flex gap-8">
+        {/* Navigation */}
+        <div className="flex items-center gap-8 text-gray-700 font-medium">
 
-        <Link
-  to="/"
-  className="hover:text-purple-600 transition duration-300"
->
-  Home
-</Link>
+          <Link
+            to="/"
+            className="hover:text-violet-600 transition"
+          >
+            Home
+          </Link>
 
-        <a
-  href="#"
-  className="hover:text-purple-600 transition duration-300"
->
-  Features
-</a>
+          <Link
+            to="/login"
+            className="hover:text-violet-600 transition"
+          >
+            Login
+          </Link>
 
-        <Link
-  to="/login"
-  className="hover:text-purple-600 transition duration-300"
->
-  Login
-</Link>
+          <Link
+            to="/login"
+            className="bg-violet-600 text-white px-5 py-2 rounded-xl hover:bg-violet-700 transition shadow-md"
+          >
+            Start Prepping
+          </Link>
 
-<Link
-  to="/signup"
-  className="hover:text-purple-600 transition duration-300"
->
-  Sign Up
-</Link>
+        </div>
 
       </div>
-
     </nav>
   );
 }
