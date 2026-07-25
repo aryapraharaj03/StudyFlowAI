@@ -11,23 +11,30 @@ export const saveRevisionKit = async ({
   quiz,
   flashcards,
 }) => {
+  console.log("saveRevisionKit called");
+
   const user = auth.currentUser;
 
-console.log("Current user:", user);
+  console.log("Current user:", user);
 
-if (!user) {
-  console.log("No user logged in");
-  return;
-}
+  if (!user) {
+    console.log("No user logged in");
+    return;
+  }
 
-console.log("Saving to Firestore...");
+  try {
+    const docRef = await addDoc(collection(db, "revisionKits"), {
+      uid: user.uid,
+      email: user.email,
+      summary,
+      quiz,
+      flashcards,
+      createdAt: serverTimestamp(),
+    });
 
-  await addDoc(collection(db, "revisionKits"), {
-    uid: user.uid,
-    email: user.email,
-    summary,
-    quiz,
-    flashcards,
-    createdAt: serverTimestamp(),
-  });
+    console.log("Document saved with ID:", docRef.id);
+  } catch (error) {
+    console.error("Firestore Error:", error);
+    throw error;
+  }
 };
