@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAGUmDKjOkDFWJhKnCfe1ZYKKdqIl9G2g8",
@@ -7,9 +8,10 @@ const firebaseConfig = {
   projectId: "studyflow-ai-aa74d",
   storageBucket: "studyflow-ai-aa74d.firebasestorage.app",
   messagingSenderId: "311148404022",
-  appId: "1:311148404022:web:87ec5cf97f7ff27ee1e797" 
+  appId: "1:311148404022:web:87ec5cf97f7ff27ee1e797",
 };
 
 const app = initializeApp(firebaseConfig);
 
 export const auth = getAuth(app);
+export const db = getFirestore(app);

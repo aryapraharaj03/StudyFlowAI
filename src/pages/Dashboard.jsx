@@ -20,6 +20,7 @@ import {
   generateFlashcards,
   askQuestion,
 } from "../services/ai";
+import { saveRevisionKit } from "../services/firestore";
 
 import { extractTextFromPDF } from "../utils/pdfReader";
 
@@ -197,10 +198,17 @@ setShowBack(false);
       }));
 
     setFlashcards(cards);
-    setCurrentCard(0);
-    setShowBack(false);
+setCurrentCard(0);
+setShowBack(false);
 
-    toast.success("🎉 Revision Kit Ready!");
+// Save to Firestore
+await saveRevisionKit({
+  summary: summaryResult,
+  quiz: quizResult,
+  flashcards: cards,
+});
+
+toast.success("🎉 Revision Kit Ready!");
   } catch (error) {
   console.error(error);
   toast.error(error.message);
