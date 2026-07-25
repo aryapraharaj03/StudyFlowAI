@@ -166,6 +166,8 @@ setShowBack(false);
   };
 
   const handleRevisionKit = async () => {
+  console.log("Button clicked");
+
   if (!selectedFile) {
     toast.error("Please choose a PDF first.");
     return;
@@ -173,6 +175,8 @@ setShowBack(false);
 
   try {
     setLoading(true);
+
+    console.log("Generating summary...");
 
     let text = pdfText;
 
@@ -182,40 +186,37 @@ setShowBack(false);
     }
 
     const summaryResult = await generateSummary(text);
-    setSummary(summaryResult);
+
+    console.log("Summary done");
 
     const quizResult = await generateQuiz(text);
-    setQuiz(quizResult);
+
+    console.log("Quiz done");
 
     const flashcardsResult = await generateFlashcards(text);
 
-    const cards = flashcardsResult
-      .split("Flashcard")
-      .filter(card => card.trim() !== "")
-      .map(card => ({
-        front: card.match(/Front:(.*)/)?.[1]?.trim(),
-        back: card.match(/Back:(.*)/)?.[1]?.trim(),
-      }));
+    console.log("Flashcards done");
 
-    setFlashcards(cards);
-setCurrentCard(0);
-setShowBack(false);
+    // existing code...
 
-// Save to Firestore
-await saveRevisionKit({
-  summary: summaryResult,
-  quiz: quizResult,
-  flashcards: cards,
-});
+    console.log("Calling saveRevisionKit...");
 
-toast.success("🎉 Revision Kit Ready!");
+    await saveRevisionKit({
+      summary: summaryResult,
+      quiz: quizResult,
+      flashcards: cards,
+    });
+
+    console.log("Finished saveRevisionKit");
+
+    toast.success("🎉 Revision Kit Ready!");
   } catch (error) {
-  console.error(error);
-  toast.error(error.message);
-} finally {
-  setLoading(false);
-}
-  };
+    console.error(error);
+    toast.error(error.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleAskQuestion = async () => {
   if (!selectedFile) {
