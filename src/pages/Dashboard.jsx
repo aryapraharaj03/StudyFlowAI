@@ -185,17 +185,20 @@ setShowBack(false);
       setPdfText(text);
     }
 
-    const summaryResult = await generateSummary(text);
+    const summaryResult = "Firestore test summary";
+console.log("Summary done");
 
-    console.log("Summary done");
+const quizResult = "Firestore test quiz";
+console.log("Quiz done");
 
-    const quizResult = await generateQuiz(text);
+const cards = [
+  {
+    front: "Question",
+    back: "Answer",
+  },
+];
 
-    console.log("Quiz done");
-
-    const flashcardsResult = await generateFlashcards(text);
-
-    console.log("Flashcards done");
+console.log("Flashcards done");
 
     // existing code...
 
