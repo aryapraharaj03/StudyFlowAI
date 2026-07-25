@@ -4,14 +4,36 @@ const ai = new GoogleGenAI({
   apiKey: import.meta.env.VITE_GEMINI_API_KEY,
 });
 
+// Helper function for handling Gemini errors
+const handleAIError = (error, defaultMessage) => {
+  console.error("Gemini Error:", error);
+
+  const message =
+    error?.message ||
+    error?.toString() ||
+    JSON.stringify(error);
+
+  if (
+    message.includes("429") ||
+    message.includes("RESOURCE_EXHAUSTED") ||
+    message.toLowerCase().includes("quota")
+  ) {
+    throw new Error("⚠️ Daily AI limit reached. Please try again tomorrow.");
+  }
+
+  throw new Error(defaultMessage);
+};
+
 export const generateSummary = async (text) => {
-  const prompt = `
-You are an AI study assistant.
+  try {
+    const prompt = `
+You are Prepzy, an AI study assistant.
 
-Summarize the following study notes in a clear, well-structured way.
+Summarize the following study notes.
 
+Requirements:
 - Explain the important concepts.
-- Keep the summary concise.
+- Keep it concise.
 - Use bullet points where appropriate.
 
 Study Notes:
@@ -19,71 +41,92 @@ Study Notes:
 ${text}
 `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-  });
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+    });
 
-  return response.text;
+    return response.text;
+  } catch (error) {
+    handleAIError(
+      error,
+      "Something went wrong while generating the summary."
+    );
+  }
 };
 
 export const generateQuiz = async (text) => {
-  const prompt = `
-You are an AI study assistant.
+  try {
+    const prompt = `
+You are Prepzy, an AI study assistant.
 
 Read the following study notes and generate 5 multiple-choice questions.
 
 Requirements:
-- Each question should have 4 options (A, B, C, D).
-- Clearly mention the correct answer after each question.
-- Make the questions suitable for exam preparation.
+- 4 options (A, B, C, D)
+- Mention the correct answer
+- Suitable for exam preparation
 
 Study Notes:
 
 ${text}
 `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-  });
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+    });
 
-  return response.text;
+    return response.text;
+  } catch (error) {
+    handleAIError(
+      error,
+      "Something went wrong while generating the quiz."
+    );
+  }
 };
 
 export const generateFlashcards = async (text) => {
-  const prompt = `
-You are an AI study assistant.
+  try {
+    const prompt = `
+You are Prepzy, an AI study assistant.
 
-Create 10 study flashcards from the following study notes.
+Create 10 study flashcards.
 
 Requirements:
-- Each flashcard should have:
-  Front: A question
-  Back: A clear answer
+- Front: Question
+- Back: Answer
 - Keep them concise.
-- Cover the most important concepts.
+- Cover the important concepts.
 
 Study Notes:
 
 ${text}
 `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-  });
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+    });
 
-  return response.text;
+    return response.text;
+  } catch (error) {
+    handleAIError(
+      error,
+      "Something went wrong while generating flashcards."
+    );
+  }
 };
 
 export const askQuestion = async (pdfText, question) => {
-  const prompt = `
-You are Prepzy, an intelligent AI study assistant.
+  try {
+    const prompt = `
+You are Prepzy, an AI study assistant.
 
 Answer ONLY using the study notes below.
 
-If the answer cannot be found in the notes, reply:
+If the answer cannot be found, reply exactly:
+
 "I couldn't find that information in your uploaded PDF."
 
 Study Notes:
@@ -95,10 +138,16 @@ Student Question:
 ${question}
 `;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-  });
+    const response = await ai.models.generateContent({
+      model: "gemini-3-flash-preview",
+      contents: prompt,
+    });
 
-  return response.text;
+    return response.text;
+  } catch (error) {
+    handleAIError(
+      error,
+      "Something went wrong while answering your question."
+    );
+  }
 };

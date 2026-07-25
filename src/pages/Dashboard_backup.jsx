@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { toast } from "react-toastify";
-
+import {
+  FileText,
+  ClipboardList,
+  Layers,
+  MessageCircle,
+  Download,
+  Copy,
+} from "lucide-react";
 import DashboardHeader from "../components/DashboardHeader";
 import UploadCard from "../components/UploadCard";
 import ChatSection from "../components/ChatSection";
@@ -41,6 +48,9 @@ const [currentCard, setCurrentCard] = useState(0);
 const [showBack, setShowBack] = useState(false);
 
   const [loading, setLoading] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+const [progressMessage, setProgressMessage] = useState("");
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -96,9 +106,13 @@ const result = await generateSummary(text);
 
       setSummary(result);
     } catch (error) {
-  console.error(error);
-  toast.error(error.message);
-} finally {
+      console.error(error);
+      toast.error(
+  error.message.includes("429")
+    ? "⚠️ Daily AI limit reached. Please try again later."
+    : error.message
+);
+    } finally {
       setLoading(false);
     }
   };
@@ -118,9 +132,13 @@ const result = await generateQuiz(pdfText);
 
       setQuiz(result);
     } catch (error) {
-  console.error(error);
-  toast.error(error.message);
-} finally {
+      console.error(error);
+      toast.error(
+  error.message.includes("429")
+    ? "⚠️ Daily AI limit reached. Please try again later."
+    : error.message
+);
+    } finally {
       setLoading(false);
     }
   };
@@ -157,9 +175,13 @@ setFlashcards(cards);
 setCurrentCard(0);
 setShowBack(false);
     } catch (error) {
-  console.error(error);
-  toast.error(error.message);
-} finally {
+      console.error(error);
+      toast.error(
+  error.message.includes("429")
+    ? "⚠️ Daily AI limit reached. Please try again later."
+    : error.message
+);
+    } finally {
       setLoading(false);
     }
   };
@@ -172,19 +194,27 @@ setShowBack(false);
 
   try {
     setLoading(true);
+    setProgress(10);
+setProgressMessage("📄 Reading your PDF...");
 
     let text = pdfText;
 
     if (!text) {
       text = await extractTextFromPDF(selectedFile);
       setPdfText(text);
+      setProgress(30);
+setProgressMessage("📝 Creating Summary...");
     }
 
     const summaryResult = await generateSummary(text);
     setSummary(summaryResult);
+    setProgress(55);
+setProgressMessage("🧠 Creating Quiz...");
 
     const quizResult = await generateQuiz(text);
     setQuiz(quizResult);
+    setProgress(80);
+setProgressMessage("🃏 Creating Flashcards...");
 
     const flashcardsResult = await generateFlashcards(text);
 
@@ -197,17 +227,27 @@ setShowBack(false);
       }));
 
     setFlashcards(cards);
+    setProgress(100);
+setProgressMessage("🎉 Revision Kit Ready!");
     setCurrentCard(0);
     setShowBack(false);
 
     toast.success("🎉 Revision Kit Ready!");
   } catch (error) {
-  console.error(error);
-  toast.error(error.message);
-} finally {
-  setLoading(false);
+    console.error(error);
+    toast.error(
+  error.message.includes("429")
+    ? "⚠️ Daily AI limit reached. Please try again later."
+    : error.message
+);
+  } finally {
+  setTimeout(() => {
+    setLoading(false);
+    setProgress(0);
+    setProgressMessage("");
+  }, 1200);
 }
-  };
+};
 
   const handleAskQuestion = async () => {
   if (!selectedFile) {
@@ -234,9 +274,13 @@ const result = await askQuestion(text, question);
 
     setAnswer(result);
   } catch (error) {
-  console.error(error);
-  toast.error(error.message);
-} finally {
+    console.error(error);
+    toast.error(
+  error.message.includes("429")
+    ? "⚠️ Daily AI limit reached. Please try again later."
+    : error.message
+);
+  } finally {
     setIsChatLoading(false);
   }
 };
@@ -300,6 +344,29 @@ const result = await askQuestion(text, question);
   handleRevisionKit={handleRevisionKit}
   loading={loading}
 />
+
+{loading && (
+  <div className="mt-6 bg-white rounded-2xl p-6 shadow-lg border">
+
+    <p className="text-red-600 text-2xl font-bold">
+  TEST
+</p>
+
+    <div className="w-full bg-gray-200 rounded-full h-4">
+
+      <div
+        className="bg-gradient-to-r from-purple-600 to-blue-600 h-4 rounded-full transition-all duration-500"
+        style={{ width: `${progress}%` }}
+      ></div>
+
+    </div>
+
+    <p className="text-right mt-2 text-gray-600">
+      {progress}%
+    </p>
+
+  </div>
+)}
 
           <ChatSection
   question={question}
